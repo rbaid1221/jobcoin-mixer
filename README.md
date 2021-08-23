@@ -11,6 +11,7 @@ A project to anonymize the sending of crypto-coin transactions (JobCoin) by mixi
 The current architecture diagram for this project also stored under the root github repo called `current-architecture.png`
 ![Current Architecture](current-architecture.png)
 
+Mostly everything was built to be performmed concurrently & asynchronously, this allows for multiple job coin addresses to be mixed at the same time. 
 The project is split into multiple core services (mixer, poller, doler, and the job coin api client)
 
 - Mixer: The mixer is essentially the entry point of the service. It creates an instance of the poller and doler. It generates new deposit addresses (and makes sure that the address is truly unused), and adds items to be polled and dole'd. 
@@ -67,4 +68,5 @@ I took multiple assumptions while writing this MVP, and have other general notes
 2. Assummed that we would not want to be polling forever. If it's been 6 months and there still have been no transactions, we should stop polling. I also added in a 'factor' to the polling so that each subsequent poll after the first would be exponential. (On config I set factor to 1, but can easily be increased)
 3. I assumed the Poller only cares about the first transaction. After the first transaction is detected it automatically starts dol'ing out the money. Alternatively, if we needed to forever poll the deposit address the implementation would be a bit different. Really we could just keep the message inside the poller for each subsequent transaction check.
 4. One way I could have easily sped up the current implementation with the doler is to group together multiple transactions into promises. For now kept it as one transaction at a time.
-5. One more thing I could have done inside the doller was to use the `lastWithdrawalDate`. If current date is too close to the `lastWithdrawalDate` we could have added it back to the doler queue to add a little bit of delay and add in more of the 'over time' requirement.
+5. One thing I could have done inside the doller was to use the `lastWithdrawalDate`. If current date is too close to the `lastWithdrawalDate` we could have added it back to the doler queue to add a little bit of delay and add in more of the 'over time' requirement.
+6. I assummed a max decimal limit of 8. I pullled this from the regular BTC decimal limit.

@@ -9,7 +9,7 @@ const isValidCommaSeparated = (input) => {
 
 const validateInput = async (addresses) => {
   logger.info(`Generating separate addresses for input: ${addresses}`);
-  const separatedAddresses = utils.separateAddressesToArray(addresses);
+  const separatedAddresses = utils.separateAddressesToArray(addresses.trim());
   let promiseChecks = [];
   for (let i = 0; i < separatedAddresses.length; i += 1) {
     promiseChecks.push(jobClientApi.isAddressUnused(separatedAddresses[i]));
@@ -35,7 +35,7 @@ const validateAddresses = async (input) => {
     return 'You supplied an empty or non-valid comma separated address. Please enter a valid comma separated list of addresses';
   }
   try {
-    await validateInput(input);
+    await validateInput(input.trim());
   } catch (ex) {
     return ex && ex.message ? ex.message : '';
   }
