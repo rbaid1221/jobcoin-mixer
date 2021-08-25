@@ -58,7 +58,7 @@ const doler = () => {
       return;
     }
     const transactionToProcess = transactionsToProcess.shift();
-    logger.info(`Handling transaction with messagee id: ${transactionToProcess}`);
+    logger.info(`Handling transaction with message id: ${transactionToProcess}`);
     await handleTransaction(transactionToProcess);
     if (!isTransactionRemaining(transactionToProcess)) {
       delete transactionInformation[transactionToProcess];

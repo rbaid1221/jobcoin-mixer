@@ -1,5 +1,4 @@
 const winston = require('winston');
-const utils = require('./utils');
 const enums = require('./enums');
 const config = require('./config/config');
 
